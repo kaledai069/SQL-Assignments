@@ -46,9 +46,11 @@ VALUES ('Ujjwal Poudel', 'Maitighar', 'Kathmandu'),
        ('Santosh Pandey', 'Char Do bato', 'Bhaktapur'),
        ('Prabin Bohora', 'Jwagal', 'Lalitpur'),
        ('Hellington Javier', 'Bhanu Chowk', 'Dharan'),
-       ('Einstein Karki', 'New Chowk', 'New town'),
-       ('Newton Neupane', 'Old Chowk', 'Old Town'),
-       ('Jones Dhakal', 'Old Chowk', 'Old Town');
+       ('Einstein Karki', 'New Chowk', 'Biratnagar'),
+       ('Newton Neupane', 'Old Chowk', 'Biratnagar'),
+       ('Jones Dhakal', 'Old Chowk', 'Old Town'),
+       ('Sahil Pradhan', 'Sukhedhara', 'Kathmandu'),
+       ('Sajjan Poudel', 'Chovar Dhanda', 'Kritipur');
        
        
 INSERT INTO Tbl_Company(company_name, city)
@@ -61,29 +63,29 @@ VALUES ('First Bank Corporation', 'Biratnagar'),
 
        
 INSERT INTO Tbl_Works(employee_name, company_name, salary)
-VALUES ('Ujjwal Poudel', 'MSI Corporated', 25000),
+VALUES ('Ujjwal Poudel', 'Bhoos Games', 25000),
 	   ('Prabin Bohora', 'Fuse Machines', 69000),
        ('Santosh Pandey', 'F1Soft IT Solution', 45000),
        ('Rishav Subedi', 'Bhoos Games', 100000),
        ('Hellington Javier', 'First Bank Corporation', 25000),
 	   ('Einstein Karki', 'First Bank Corporation', 56000),
-       ('Newton Neupane', 'First Bank Corporation', 47256),
-       ('Jones Dhakal', 'Small Bank Corporation', 56562);
+       ('Newton Neupane', 'First Bank Corporation', 96256),
+       ('Jones Dhakal', 'Small Bank Corporation', 56562),
+       ('Sahil Pradhan', 'Small Bank Corporation', 98000),
+       ('Sajjan Poudel', 'MSI Corporated', 150000);
 
 INSERT INTO Tbl_manages(employee_name, manager_name)
 VALUES ('Hellington Javier', 'Newton Neupane'),
 	   ('Einstein Karki', 'Newton Neupane'),
        ('Rishav Subedi', 'Ujjwal Poudel'),
-	   ('Santosh Pandey', 'Ujjwal Poudel'),
-       ('Ujjwal Poudel', 'Prabin Bohora'),
-       ('Newton Neupane', 'Prabin Bohora'),
-       ('Jones Dhakal', 'Prabin Bohora');
+	   ('Jones Dhakal', 'Sahil Pradhan');
        
 SELECT * FROM Tbl_employee;
 SELECT * FROM Tbl_company;
 SELECT * FROM Tbl_works;
 SELECT * FROM Tbl_manages;
 
+-- ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 -- 2
 -- Consider the employee database, where the primary keys are underlines. 
 -- Give an expression in SQL for each of the following queries:
@@ -104,7 +106,7 @@ WHERE TBW.company_name = 'First Bank Corporation');
 SELECT TBE.employee_name AS 'Employee Name' FROM Tbl_employee AS TBE
 INNER JOIN Tbl_works AS TBW ON TBE.employee_name = TBW.employee_name
 WHERE TBW.company_name = 'First Bank Corporation';
-
+-- ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 -- 2 (b)
 -- QUESTION: Find all names and cities of residence of all employees who work for First Bank Corporation
@@ -121,6 +123,7 @@ WHERE TBW.company_name = 'First Bank Corporation');
 SELECT TBE.employee_name AS 'Employee Name', TBE.city AS 'City of Residence' FROM Tbl_employee AS TBE
 INNER JOIN Tbl_works AS TBW ON TBE.employee_name = TBW.employee_name
 WHERE TBW.company_name = 'First Bank Corporation';
+-- ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 -- 2 (c)
 -- QUESTION: Find the names, street addresses, and cities of residence of all employees who work for First Bank Corporation and earn more than $10, 000
@@ -144,6 +147,7 @@ SELECT TBE.employee_name AS 'Employee Name', TBE.street as 'Street', TBE.city AS
 INNER JOIN Tbl_works AS TBW ON TBE.employee_name = TBW.employee_name
 WHERE TBW.company_name = 'First Bank Corporation'
 AND TBW.salary > 10000;
+-- ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 -- 2 (d)
 -- QUESTION: Find all employees in the database who live in the same cities as the companies for which they work
@@ -163,6 +167,7 @@ ON TBW.employee_name = TBE.employee_name
 INNER JOIN Tbl_company AS TBC
 ON TBC.company_name = TBW.company_name
 WHERE TBC.city = TBE.city;
+-- ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 -- 2 (e)
 -- QUESTION: Find all employees in the database who live in the same cities and on the same streets as do their managers
@@ -194,9 +199,9 @@ AND TBES.street = TBE.street));
 SELECT TBE.employee_name AS 'Employee Name', TBE.street AS 'Street', TBE.city AS 'City' FROM Tbl_employee AS TBE
 INNER JOIN Tbl_manages AS TBM ON TBE.employee_name = TBM.employee_name
 INNER JOIN Tbl_employee AS TBES ON TBM.manager_name = TBES.employee_name
-WHERE TBES.city = TBE.city
-AND TBES.street = TBES.street;
-
+WHERE (TBES.city = TBE.city
+AND TBES.street = TBE.street);
+-- ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 -- 2 (f)
 -- QUESTION: Find all employees in the database who do not work for First Bank Corporation
@@ -220,7 +225,7 @@ SELECT TBW.employee_name AS 'Employee Name', TBW.company_name AS 'Company Name' 
 INNER JOIN Tbl_employee AS TBE
 ON TBW.employee_name = TBE.employee_name
 WHERE NOT (TBW.company_name = 'First Bank Corporation');
-
+-- ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 -- 2 (g)
 -- QUESTION: Find all employees in the database who earn more than each employee of Small Bank Corporation
@@ -231,6 +236,7 @@ SELECT TBW.employee_name as 'Employee Name', TBW.salary as 'Employee Salary' FRO
 WHERE TBW.salary >
 (SELECT MAX(TBW.salary) FROM Tbl_works as TBW
 WHERE TBW.company_name = 'Small Bank Corporation');
+-- ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 -- 2 (h)
 -- QUESTION: Assume that the companies may be located in several cities. Find all companies located in every city in which Small Bank Corporation is located
@@ -250,7 +256,7 @@ SELECT TBC.company_name AS 'Company Name', TBC.city AS 'Location (city)' FROM Tb
 WHERE TBC.city = 
 (SELECT TBC.city FROM Tbl_company AS TBC
 WHERE TBC.company_name = 'Small Bank Corporation');
-
+-- ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 -- 2 (i)
 -- QUESTION: Find all employees who earn more than the average salary of all employees of their company
@@ -279,7 +285,7 @@ GROUP BY TBC.company_name) AS temp_table
 INNER JOIN Tbl_works AS TBCS
 ON temp_table.company_name = TBCS.company_name
 WHERE TBCS.salary >= temp_table.AVG_salary;
-
+-- ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 -- 2 (j)
 -- QUESTION: Find the company that has the most employees
@@ -289,6 +295,7 @@ SELECT TBW.company_name AS 'Company Name', COUNT(TBW.employee_name) AS MAX_Emplo
 FROM Tbl_works AS TBW GROUP BY TBW.company_name
 ORDER BY MAX_Employee_Count DESC
 LIMIT 1;
+-- ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 -- 2 (k)
 -- QUESTION: Find the company that has the smallest payroll
@@ -297,6 +304,7 @@ LIMIT 1;
 SELECT TBW.company_name AS 'Company Name', TBW.salary as 'Smallest Payroll' FROM Tbl_works AS TBW
 ORDER BY TBW.salary ASC
 LIMIT 1;
+-- ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 -- 2 (l)
 -- QUESTION: Find those companies whose employees earn a higher salary, on average, than the average salary at First Bank Corporation
@@ -308,7 +316,7 @@ WHERE temp_table.AVG_Salary >
 (SELECT AVG(TBW.Salary) FROM Tbl_works AS TBW
 GROUP BY TBW.company_name
 HAVING TBW.company_name = 'First Bank Corporation');
-
+-- ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 -- 3
 -- Consider the relational database of given schema. Give an expression in SQL for each of the following queries
@@ -327,7 +335,7 @@ HAVING TBW.company_name = 'First Bank Corporation');
  -- A peak at updated record for Jones
   SELECT * FROM Tbl_employee AS TBE
  WHERE employee_name = 'Jones Dhakal';
-
+-- ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 -- 3 (b) 
 -- QUESTION: Give all employees of First Bank Corporation a 10 percent raise
@@ -347,11 +355,7 @@ WHERE company_name = 'First Bank Corporation');
 SELECT TBW.employee_name, TBW.salary FROM Tbl_works as TBW 
 WHERE TBW.company_name = 'First Bank Corporation';
  
--- A mistake in filling sensible data: managers and employees should be in the same company
--- So updating Prabin Bohora to First Bank Corporation
-UPDATE Tbl_works
-SET company_name = 'First Bank Corporation'
-WHERE employee_name = 'Prabin Bohora';
+ -- ----------------------------------------------------------------------------------------------------------------------------------------------------------------
  
 -- 3 (c)
 -- QUESTION: Give all managers of First Bank Corporation a 10 percent raise;
@@ -375,6 +379,7 @@ SELECT TBW.employee_name, TBW.salary FROM Tbl_works AS TBW
 WHERE TBW.employee_name IN 
 (SELECT TBM.manager_name FROM Tbl_manages AS TBM)
 AND TBW.company_name = 'First Bank Corporation';
+-- ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 -- 3 (d)
 -- QUESTION: Give all managers of First Bank Corporation a 10 percent raise unless the salary becomes greater than $100, 000; in such cases, give only 3 percent raise
@@ -396,6 +401,7 @@ SELECT TBW.employee_name, TBW.salary FROM Tbl_works AS TBW
 WHERE TBW.employee_name IN 
 (SELECT TBM.manager_name FROM Tbl_manages AS TBM)
 AND TBW.company_name = 'First Bank Corporation';
+-- ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 -- 3 (e)
 -- QUESTION: Delete all tuples in the works relation for employees of Small Bank Corporation
@@ -418,3 +424,4 @@ SET SQL_SAFE_UPDATES = 1;
 -- Null return: specifying that there is no employees from Small Bank Corporation in Tbl_works table.
 SELECT TBW.employee_name FROM Tbl_works AS TBW
 WHERE TBW.company_name = 'Small Bank Corporation';
+-- ----------------------------------------------------------------------------------------------------------------------------------------------------------------
